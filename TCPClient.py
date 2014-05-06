@@ -2,6 +2,7 @@ import sys
 import select
 import socket
 import threading
+import time
 
 #not_active method, used in thread for timeout of inactive users
 def not_active(sock):
@@ -64,7 +65,7 @@ if __name__ == '__main__':
 
 			except:
 				#catches exceptions gracefully
-				time_method.cancel()
+				# time_method.cancel()
 				clientSocket.send('logout')
 				sys.exit()
 

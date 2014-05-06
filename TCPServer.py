@@ -186,19 +186,19 @@ def block(blocked_user, sock):
 	blocked_peer = blocked_user.split()
 	currentuser = [key for (key, val) in online_socket.items() if val == sock]
 	mod_currentuser = currentuser[0]
+	#checks if they are blocking themselves
+	if blocked_peer[0] == currentuser[0]:
+		sock.send('Error! You cannot block yourself.\n')
 	#checks if current user is already blocked
-	if mod_currentuser not in blocked:
+	elif mod_currentuser not in blocked:
 		blocked[mod_currentuser] = [blocked_peer[0]]
 		sock.send('You have successfully blocked '+blocked_peer[0]+' from sending you messages.\n')
 	else: 
-		#checks if they are blocking themselves
-		if blocked_peer[0] == currentuser[0]:
-			sock.send('Error! You cannot block yourself.\n')
 		#checks if the user exists
-		elif not content.has_key(blocked_peer[0]):
+		if not content.has_key(blocked_peer[0]):
 			sock.send('Error! This user does not exist.\n')
 		elif len(blocked[mod_currentuser]) == 0:
-			print blocked
+			# print blocked
 			blocked[mod_currentuser] = [blocked_peer[0]]
 			sock.send('You have successfully blocked '+blocked_peer[0]+' from sending you messages.\n')
 		else:
@@ -222,7 +222,7 @@ def unblock(blocked_user, sock):
 	if blocked_peer[0] in blocked[mod_currentuser]:
 		(blocked[mod_currentuser]).remove(blocked_peer[0])
 		sock.send('You have successfuly unblocked '+ blocked_peer[0] +' from sending you messages.\n')
-		print blocked
+		# print blocked
 	else:
 		#checks if user is originally blocked
 		sock.send('You have not blocked ' + blocked_peer[0]+'.\n')
@@ -272,7 +272,6 @@ if __name__ == '__main__':
 			
 			else:
 				try:
-
 					data = sock.recv(1024)
 					#parse commands
 					command = data.split(' ', 1)
